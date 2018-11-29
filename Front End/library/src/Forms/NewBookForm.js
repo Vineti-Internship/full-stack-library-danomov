@@ -1,26 +1,27 @@
 import React from 'react';
 
 
-export class NewBookForm extends React.PureComponent {
-    render() {
+export const NewBookForm = (props) => {
+
+    let formFields = {}
+
+
+    
         return (
-        <React.Fragment>
-        <form>
+       
+        <form onSubmit={ (e) => {e.preventDefault(); props.handleFormSubmit(formFields.name.value, formFields.description.value, formFields.rating.value, formFields.author_id.value); e.target.reset() }}>
         <p>New Book</p>
-        <input type="text" placeholder="Name"></input>
+        <input ref={input => formFields.name = input} type="text" placeholder="Name"></input>
         <br></br>
-        <input type="text" placeholder="Description"></input>
+        <input ref={input => formFields.description = input} type="text" placeholder="Description"></input>
         <br></br>
-        <input type="text" placeholder="Rating"></input>
+        <input ref={input => formFields.rating = input} type="text" placeholder="Rating"></input>
         <br></br>
-        <input type="text" placeholder="Author ID"></input>
+        <input ref={input => formFields.author_id = input} type="text" placeholder="Author ID"></input>
         <br></br>
-        <input type="submit" value="Submit"></input>
-        <br></br>
-        <br></br>
-        <button>Back</button>
+        <button>Submit Form</button>
         </form>
-        </React.Fragment>     
+        
         )
-    }
+    
 }

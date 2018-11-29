@@ -2,10 +2,7 @@ import React from 'react';
 import { Authors } from './Components/Authors';
 import { Books } from './Components/Books';
 import { Selector } from './Components/Selector';
-import { NewAuthor } from './Routes/NewAuthor';
-import { NewAuthorForm } from './Forms/NewAuthorForm';
-import { NewBook } from './Routes/NewBook';
-import { NewBookForm } from './Forms/NewBookForm';
+
 
 class App extends React.PureComponent {
 
@@ -17,37 +14,26 @@ class App extends React.PureComponent {
         }
         
         this.changeCategory = this.changeCategory.bind(this);
-        this.newAuthor = this.newAuthor.bind(this);
-        this.newBook = this.newBook.bind(this);
+        
     }
 
+    //Method that changes show page when changing category on selector
     changeCategory(newSelector) {
         this.setState({
-            selector: newSelector
+            selector: newSelector,
         });
 
     }
 
-    newAuthor(newAuth) {
-        this.setState({
-            selector: newAuth
-        })
-    }
-
-    newBook(newBooks) {
-        this.setState({
-            selector: newBooks
-        })
-    }
-
+    
     render() {
     
+        //Show page depending on statements
         if(this.state.selector === "author"){
             return (
                 <React.Fragment>
                     <Selector onChange={this.changeCategory}/>
-                    <Authors/>
-                    <NewAuthor onClick={this.newAuthor}/>                   
+                    <Authors />                  
                 </React.Fragment>
             );
         }
@@ -55,28 +41,15 @@ class App extends React.PureComponent {
             return (
                 <React.Fragment>
                     <Selector onChange={this.changeCategory}/>
-                    <Books /> 
-                    <NewBook onClick={this.newBook}/>                   
+                    <Books />                                      
                 </React.Fragment>
             );
         }
-        else if(this.state.selector === "newauthor"){
-            return (
-                <React.Fragment>
-                    <NewAuthorForm/>                 
-                </React.Fragment>
-            );
-        }
-        else if(this.state.selector === "newbook"){
-            return (
-                <React.Fragment>
-                    <NewBookForm/>                 
-                </React.Fragment>
-            );
-        }
+        
     }
 
 }
 
 
 export default App;
+

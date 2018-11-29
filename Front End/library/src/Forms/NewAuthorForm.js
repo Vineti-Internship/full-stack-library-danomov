@@ -1,50 +1,21 @@
 import React from 'react';
 
 
-export class NewAuthorForm extends React.PureComponent {
-    constructor(props){
-        super(props)
-
-        // this.requestForm = this.requestForm.bind(this);
-    }
-
-
-    // requestForm() {
-    // const myRequest = new Request('http://localhost:3000/authors', {method: 'POST', body: '{"full_name":"John Doe"}'});
- 
+//New Author form builder  
+export const NewAuthorForm = (props) => {
+   
+    let formFields = {}
     
-    // fetch(myRequest)
-    //    .then(response => {
-    // if (response.status === 200) {
-    //    console.log('yes');
-    // } 
-    // else {
-    //   throw new Error('Something went wrong on api server!');
-    // }
-    //     })
-    // .then(response => {
-    // console.debug(response);
-    // // ...
-    // }).catch(error => {
-    // console.error(error);
-    // });
-    // }
-    
-
-
-    render() {
-        return (
-        <React.Fragment>
-        <form>
+   
+    return (
+      
+        <form onSubmit={ (e) => {e.preventDefault(); props.handleFormSubmit(formFields.name.value); e.target.reset() }}>
         <p>New Author</p>
-        <input type="text" placeholder="Full Name"></input>
+        <input ref={input => formFields.name = input} type="text" placeholder="Full Name"></input>
         <br></br>
-        <input type="submit" value="Submit"></input>
-        <br></br>
-        <br></br>
-        <button>Back</button>
+        <button>Submit Form</button>
         </form>
-        </React.Fragment>     
-        )
-    }
+      
+    )
+    
 }
