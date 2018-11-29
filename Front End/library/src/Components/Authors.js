@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 import { NewAuthorForm } from '../Forms/NewAuthorForm';
-
+import { Loader } from './Loader'
 
 //Author table component
 export class Authors extends React.PureComponent {
@@ -9,12 +9,17 @@ export class Authors extends React.PureComponent {
     super(props) 
     this.state = {
       authors: [],
+      isLoading: false,
     }
 
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
     this.addNewAuthor = this.addNewAuthor.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
     this.deleteAuthor = this.deleteAuthor.bind(this);
+  }
+
+  async componentWillMount() {
+    this.setState({isLoading: true});
   }
 
   //Request to server for deleting data
@@ -38,7 +43,7 @@ export class Authors extends React.PureComponent {
   deleteAuthor(id) {    
     this.setState({
       authors: this.state.authors.filter((author) => author.id !== id),
-    })
+    });
     
     alert(`Author with an ID ${id} has been removed Successfully! Please refresh the page to see the list`);
   }
@@ -60,7 +65,7 @@ export class Authors extends React.PureComponent {
         })
         .then((response) => {return response.json()})
         .then((author)=>{
-        this.addNewAuthor(author)
+        this.addNewAuthor(author);
     
   })
       
@@ -80,7 +85,8 @@ export class Authors extends React.PureComponent {
   //Ask server for authors data
   async componentDidMount() {
       const result = await fetch('http://localhost:3000/authors');
-      this.setState({authors: await result.json()});
+      this.setState({authors: await result.json(), isLoading: false});
+      
   }
       
 
@@ -88,6 +94,10 @@ export class Authors extends React.PureComponent {
 
   render() {
     const { authors } = this.state;
+
+    if(this.state.isLoading) {
+      return <Loader />
+    }
   
     return (
         
@@ -112,6 +122,7 @@ export class Authors extends React.PureComponent {
                 <td style={{border: '1px solid white', textAlign: 'center'}}>{author.full_name}</td>
                 <td style={{border: '1px solid white', textAlign: 'center'}}>{author.books.length}</td>
                 <button value={author.id} onClick={(e) => this.handleDelete(e.target.value)}>Delete</button>
+                <button value={author.id} onClick={(e) => console.log('Edit')}>Edit</button>
              </tr>
              </tbody>
              

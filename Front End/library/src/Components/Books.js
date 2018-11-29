@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 import { NewBookForm } from '../Forms/NewBookForm';
-
+import { Loader } from './Loader'
 
 //Book table component
 export class Books extends React.PureComponent {
@@ -9,6 +9,7 @@ export class Books extends React.PureComponent {
     super(props)
     this.state = {
       books: [],
+      isLoading: false,
     }
 
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
@@ -17,6 +18,9 @@ export class Books extends React.PureComponent {
     this.deleteBook = this.deleteBook.bind(this);
     }
 
+    async componentWillMount(){
+      this.setState({isLoading: true});
+    }
 
     //Request to server for deleting data
     handleDelete(id){
@@ -80,12 +84,16 @@ export class Books extends React.PureComponent {
     //Ask server for books data
     async componentDidMount() {
       const result = await fetch('http://localhost:3000/books');
-      this.setState({books: await result.json()});
+      this.setState({books: await result.json(), isLoading: false});
     }
   
     render() {
     
       const { books } = this.state;
+
+      if(this.state.isLoading) {
+        return <Loader/>
+      }
   
     return (
         
