@@ -70,7 +70,7 @@ export class Authors extends React.PureComponent {
       }
     }).then((response) => { 
       if(response.status > 299 || response.status < 200) {
-       alert(response.statusText);
+       alert(response.statusText + "\n" + "You can't delete an author until he has no books");
       } else {
        this.deleteAuthor(id);
       }
@@ -105,7 +105,7 @@ export class Authors extends React.PureComponent {
         .then((author)=>{
         this.addNewAuthor(author);
     
-  })
+  }).catch(err => { alert(err) })
       
   }
 

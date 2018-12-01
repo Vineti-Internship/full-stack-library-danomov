@@ -121,7 +121,7 @@ export class Books extends React.PureComponent {
           .then((book)=>{
           this.addNewBook(book);
       
-    })
+    }).catch(err => { alert(err) })
         
     }
   

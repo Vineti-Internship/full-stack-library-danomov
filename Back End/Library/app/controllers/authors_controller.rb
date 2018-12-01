@@ -22,6 +22,8 @@ class AuthorsController < ApplicationController
     else
       render json: @author.errors, status: :unprocessable_entity
     end
+
+    
   end
 
   # PATCH/PUT /authors/1
