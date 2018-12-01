@@ -1,28 +1,66 @@
 import React from 'react';
 import './App.css';
 import { NewAuthorForm } from '../Forms/NewAuthorForm';
-import { Loader } from './Loader'
-
+import { Loader } from './Loader';
+import { EditAuthorForm } from '../Forms/EditAuthorForm';
+ 
 //Author table component
 export class Authors extends React.PureComponent {
   constructor(props) {
     super(props) 
     this.state = {
       authors: [],
-      isLoading: false,
+      isLoading: true,
+      selector: "authorselect",
+      id: 0,
     }
 
+  //Binding methods
+  //New Author 
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
     this.addNewAuthor = this.addNewAuthor.bind(this);
+  //Delete Author 
     this.handleDelete = this.handleDelete.bind(this);
     this.deleteAuthor = this.deleteAuthor.bind(this);
+  //Edit Author
+    this.handleFormEdit = this.handleFormEdit.bind(this);
+    this.editAuthor = this.editAuthor.bind(this);
   }
 
-  async componentWillMount() {
-    this.setState({isLoading: true});
+  
+  //Request db to edit data 
+  handleFormEdit(id, data) {
+
+    let body = JSON.stringify({"full_name": data});
+
+    fetch(`http://localhost:3000/authors/${id}`, 
+    {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: body,
+    }).then((response) => {
+      return response.json()})
+      .then((author)=>{
+      this.editAuthor(author);
+    })
+
   }
 
-  //Request to server for deleting data
+  //Change state to render data
+  editAuthor(author) {
+    let newAuthors = this.state.authors.filter((auth) => auth.id !== author.id)
+    newAuthors.push(author)
+    this.setState({
+      authors: newAuthors
+    })
+
+    alert(`Author has been updated Successfully! Please refresh the page to see the list`);
+  }
+
+
+  //Request db to delete data
   handleDelete(id){
     fetch(`http://localhost:3000/authors/${id}`, 
     {
@@ -34,7 +72,7 @@ export class Authors extends React.PureComponent {
       if(response.status > 299 || response.status < 200) {
        alert(response.statusText);
       } else {
-        this.deleteAuthor(id);
+       this.deleteAuthor(id);
       }
     })
   }
@@ -49,13 +87,13 @@ export class Authors extends React.PureComponent {
   }
 
 
-  //Request to server for posting data
+  //Request db to add new data
   handleFormSubmit(name){
     console.log(this.state.authors);
 
     let body = JSON.stringify({"author": {"full_name": name } });
   
-    console.log(body)
+   
   fetch('http://localhost:3000/authors', {
         method: 'POST',
         headers: {
@@ -78,7 +116,6 @@ export class Authors extends React.PureComponent {
         })
 
         alert("Added new Author! Please refresh the page to see the list");
-       
   }
 
 
@@ -94,15 +131,19 @@ export class Authors extends React.PureComponent {
 
   render() {
     const { authors } = this.state;
+    
 
     if(this.state.isLoading) {
       return <Loader />
     }
+
+    if(this.state.selector === "authorselect"){
   
     return (
         
         <React.Fragment>
           <NewAuthorForm handleFormSubmit={this.handleFormSubmit}/>
+          
            
             <h1>Authors List</h1>
             <table style={{width:'90%', border:'2px solid white', borderRadius: '5px'}}>
@@ -122,7 +163,7 @@ export class Authors extends React.PureComponent {
                 <td style={{border: '1px solid white', textAlign: 'center'}}>{author.full_name}</td>
                 <td style={{border: '1px solid white', textAlign: 'center'}}>{author.books.length}</td>
                 <button value={author.id} onClick={(e) => this.handleDelete(e.target.value)}>Delete</button>
-                <button value={author.id} onClick={(e) => console.log('Edit')}>Edit</button>
+                <button value={author.id} onClick={(e) => this.setState({selector: "editselect", id: e.target.value})}>Edit</button>
              </tr>
              </tbody>
              
@@ -132,5 +173,15 @@ export class Authors extends React.PureComponent {
           
         </React.Fragment>
       );
+    }
+    else if(this.state.selector === "editselect") {
+
+      return (
+        <EditAuthorForm id={this.state.id} handleFormEdit={this.handleFormEdit}/>
+      )
+
+    }
+
+
     }
   }
