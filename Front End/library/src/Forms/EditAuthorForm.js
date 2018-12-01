@@ -36,7 +36,7 @@ export class EditAuthorForm extends React.PureComponent {
     return (
         <form onSubmit={ (e) => {e.preventDefault(); this.props.handleFormEdit(this.state.val, formFields.name.value); e.target.reset() }}>
         <p>Edit Author</p>
-        <input type="text" value={authors.full_name} ref={input => formFields.name = input} ></input>
+        <input type="text" defaultValue={authors.full_name} ref={input => formFields.name = input} ></input>
         <br></br>
         <button>Submit Form</button>
         </form>
