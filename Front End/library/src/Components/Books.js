@@ -26,9 +26,26 @@ export class Books extends React.PureComponent {
   //Edit Book
     this.handleFormEdit = this.handleFormEdit.bind(this);
     this.editBook = this.editBook.bind(this);  
+  //Search Book
+    this.handleSearch = this.handleSearch.bind(this);
+    this.showSearch = this.showSearch.bind(this);
   }
 
+    //Filtering Books
+    handleSearch(searchText) {
+      console.log(this.state.books)
+      let filtered = this.state.books.filter((book) => {
+          return (book.name.includes(searchText) || book.description.includes(searchText))
+      })
 
+      this.showSearch(filtered)
+      
+    }
+
+    //Set new state to render data
+    showSearch(data) {
+      this.setState({books: data})
+    }
 
     //Request db to edit data
     handleFormEdit(id, name, description, rating, author_id) {

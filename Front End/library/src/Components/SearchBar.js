@@ -11,7 +11,7 @@ let formFields = {}
     return (
         <form onSubmit={ (e) => {
             e.preventDefault(); 
-            // props.handleEdit(formFields.searchText) 
+            props.handleSearch(formFields.searchText.value) 
             e.target.reset() 
         }}>
         <input ref={input => formFields.searchText = input} type="text" placeholder="Search.."></input>
@@ -19,4 +19,5 @@ let formFields = {}
         </form>
     );
 
+   
 }

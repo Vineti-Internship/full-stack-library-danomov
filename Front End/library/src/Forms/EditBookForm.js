@@ -31,7 +31,7 @@ export class EditBookForm extends React.PureComponent {
 
     let formFields = {}
 
- return (   
+ return ( 
     <form onSubmit={ (e) => {e.preventDefault(); this.props.handleFormEdit(this.state.val, formFields.name.value, formFields.description.value, formFields.rating.value, formFields.author_id.value); e.target.reset() }}>
     <p>Edit Book</p>
     <input ref={input => formFields.name = input} defaultValue={books.name} type="text"></input>
